@@ -11,6 +11,14 @@ const router = createRouter({
         icon: "mdi-menu",
       },
     },
+    {
+      path: "/Dashboard",
+      name: "Dashboard",
+      component: () => import("../views/Dashboard.vue"),
+      meta: {
+        icon: "mdi-menu",
+      },
+    },
   ],
 });
 // router.beforeEach(async (to, from, next) => {
