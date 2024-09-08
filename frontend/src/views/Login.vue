@@ -43,7 +43,7 @@ const login = async () => {
                         <!-- </v-col> -->
                         <v-col>
                             <div class="d-flex justify-center">
-                                <img src="/Logo.png" alt="Logo de la aplicación" height="200" class="" />
+                                <img src="/Logo.png" alt="Logo de la aplicación" height="190" class="" />
                             </div>
                             <v-card flat class="d-flex flex-column justify-center pa-4 mx-8" color="primary">
                                 <!-- <v-card-title class="text-center text-h4">
@@ -51,18 +51,18 @@ const login = async () => {
                                     </v-card-title> -->
 
 
-                                <v-form @submit.prevent="login" ref="form" class="mt-8">
+                                <v-form @submit.prevent="login" ref="form" class="mt-4">
                                     <v-text-field v-model="loginData.user" label="Usuario" prepend-icon="mdi-account"
                                         :rules="required">
                                     </v-text-field>
 
-                                    <v-text-field v-model="loginData.pass" class="mt-6" label="Contraseña"
+                                    <v-text-field v-model="loginData.pass" class="mt-3" label="Contraseña"
                                         :type="showPassword ? 'text' : 'password'" prepend-icon="mdi-lock"
                                         :rules="required" :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                                         @click:append="showPassword = !showPassword">
                                     </v-text-field>
 
-                                    <v-btn :loading="loading" class="mt-10 py-5 text-subtitle-1" color="#5038b2" block
+                                    <v-btn :loading="loading" class="mt-5 py-5 text-subtitle-1" color="#5038b2" block
                                         type="submit">
                                         Iniciar sesión
                                     </v-btn>

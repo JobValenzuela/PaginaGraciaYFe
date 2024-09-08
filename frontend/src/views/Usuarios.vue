@@ -1,6 +1,6 @@
 <template>
     <PrincipalLayout>
-        Dashboard
+        Usuarios
     </PrincipalLayout>
 </template>
 

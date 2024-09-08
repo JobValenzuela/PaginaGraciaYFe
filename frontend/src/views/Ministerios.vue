@@ -1,6 +1,6 @@
 <template>
     <PrincipalLayout>
-        Dashboard
+        Ministerios
     </PrincipalLayout>
 </template>
 

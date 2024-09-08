@@ -29,11 +29,12 @@ const vuetify = createVuetify({
         light: {
           dark: false,
           colors: {
-            primary: '#E0E0E0',
+            primary: '#f8f8f8',
             secondary: '#1e1e1e',
-            bg: '#E0E0E0',
+            GYF: '#5038b2',
+            GYF2: '#5038b2',
             hovermenu: '#BDBDBD',
-            botones: '#455A64'
+            botones: '#5038b2'
           }
         },
         dark: {
@@ -41,9 +42,10 @@ const vuetify = createVuetify({
           colors: {
             primary: '#1e1e1e',
             secondary: '#f1f1f1',
-            bg: '#1e1e1e',
+            GYF: '#5038b2',
+            GYF2: '#031a61',
             hovermenu: '#2d2d2d',
-            botones: '#ECEFF1'
+            botones: '#5038b2'
           }
         },
       },
