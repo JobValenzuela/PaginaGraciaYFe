@@ -1,21 +1,25 @@
 <script setup>
 import { ref } from "vue"
 import PrincipalLayout from '@/components/General/PrincipalLayout.vue';
+import InformacionPersonal from "@/components/Miembros/InformacionPersonal.vue";
+import FechasImportantes from "@/components/Miembros/FechasImportantes.vue";
 const search = ref('')
 const dialog = ref(false)
 const isEdit = ref(false)
 const miembros = ref([])
+const loading = ref(false)
 const miembro = ref({})
 const tab = ref()
 const openDialog = (item) => {
     if (item) {
         isEdit.value = true
-        miembro.value = { ...item }
         dialog.value = true
     } else {
         isEdit.value = false
         dialog.value = true
     }
+    console.log(isEdit.value);
+    
 }
 </script>
 <template>
@@ -43,7 +47,7 @@ const openDialog = (item) => {
             <v-dialog v-model="dialog" width="95%" persistent>
                 <v-card class="bg-primary" rounded="xl">
                     <v-card-title class="text-center mt-2" :class="$vuetify.display.mobile ? 'text-h4' : 'text-h5'">
-                        {{ isEdit ? 'Nuevo miembro' : 'Editar miembro' }}
+                        {{ isEdit ? 'Editar miembro' : 'Nuevo miembro' }}
 
                         <!-- Icono de cerrar -->
                         <v-btn icon @click="dialog = false" class="close-btn bg-primary text-h5" absolute flat>
@@ -61,10 +65,10 @@ const openDialog = (item) => {
 
                         <v-tabs-window v-model="tab">
                             <v-tabs-window-item value="1">
-                                
+                                <InformacionPersonal/>
                             </v-tabs-window-item>
                             <v-tabs-window-item value="2">
-                                Value 2
+                                <FechasImportantes/>
                             </v-tabs-window-item>
                             <v-tabs-window-item value="3">
                                 Value 3
