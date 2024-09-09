@@ -100,7 +100,7 @@
             </v-list>
         </v-navigation-drawer>
 
-        <v-main class=" mx-6 my-2">
+        <v-main class=" mx-6 my-4" >
             <!-- Aquí renderizamos el contenido pasado al layout -->
             <slot></slot>
         </v-main>
