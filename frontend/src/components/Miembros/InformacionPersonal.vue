@@ -25,7 +25,7 @@
             </v-row>
             <v-row>
                 <v-col>
-                    <v-btn color="GYF2" size="large" block>Guardar</v-btn>
+                    <v-btn color="GYF2" size="large" block @click="enviarInformacion()">Guardar</v-btn>
                 </v-col>
             </v-row>
             <!-- <div class="text-center text-h5 my-2">
@@ -40,4 +40,7 @@ import { useMiembroStore } from '@/stores/MiembroStore';
 import { storeToRefs } from 'pinia'
 const MiembroStore = useMiembroStore()
 const { miembro } = storeToRefs(MiembroStore)
+const enviarInformacion = () =>{
+    console.log(miembro.value)
+}
 </script>

@@ -3,6 +3,9 @@ import { ref } from "vue"
 import PrincipalLayout from '@/components/General/PrincipalLayout.vue';
 import InformacionPersonal from "@/components/Miembros/InformacionPersonal.vue";
 import FechasImportantes from "@/components/Miembros/FechasImportantes.vue";
+import DiscipuladoJuan from "@/components/Miembros/DiscipuladoJuan.vue";
+import HaciaLaMeta1 from "@/components/Miembros/HaciaLaMeta1.vue";
+import HaciaLaMeta2 from "@/components/Miembros/HaciaLaMeta2.vue";
 const search = ref('')
 const dialog = ref(false)
 const isEdit = ref(false)
@@ -18,7 +21,6 @@ const openDialog = (item) => {
         isEdit.value = false
         dialog.value = true
     }
-    console.log(isEdit.value);
     
 }
 </script>
@@ -71,10 +73,13 @@ const openDialog = (item) => {
                                 <FechasImportantes/>
                             </v-tabs-window-item>
                             <v-tabs-window-item value="3">
-                                Value 3
+                                <DiscipuladoJuan/>
                             </v-tabs-window-item>
                             <v-tabs-window-item value="4">
-                                Value 4
+                                <HaciaLaMeta1/>
+                            </v-tabs-window-item>
+                            <v-tabs-window-item value="5">
+                                <HaciaLaMeta2/>
                             </v-tabs-window-item>
                         </v-tabs-window>
                     </v-card-text>
