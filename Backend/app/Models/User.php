@@ -16,10 +16,22 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+     public $primaryKey = 'usuario_id';
+
+     public $table = 'usuarios';
+
+     public $timestamps = false;
+
     protected $fillable = [
-        'name',
+        'nombre_usuario',
         'email',
         'password',
+        'tipo_usuario',
+        'remember_token',
+        'nombre_completo',
+        'rfc',
+        'nss',
     ];
 
     /**
