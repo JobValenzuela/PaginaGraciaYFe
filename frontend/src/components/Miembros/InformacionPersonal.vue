@@ -3,7 +3,7 @@
         <v-card-text>
             <v-row>
                 <v-col>
-                    <v-text-field label="Nombre completo" v-model="miembro.nombre_completo" />
+                    <v-text-field label="Nombre completo" v-model="miembro.nombre" />
                 </v-col>
             </v-row>
             <v-row>
@@ -25,7 +25,7 @@
             </v-row>
             <v-row>
                 <v-col>
-                    <v-btn color="GYF2" size="large" block @click="enviarInformacion()">Guardar</v-btn>
+                    <v-btn color="GYF2" size="large" block @click="enviarInformacion()" >Guardar</v-btn>
                 </v-col>
             </v-row>
             <!-- <div class="text-center text-h5 my-2">
@@ -40,7 +40,11 @@ import { useMiembroStore } from '@/stores/MiembroStore';
 import { storeToRefs } from 'pinia'
 const MiembroStore = useMiembroStore()
 const { miembro } = storeToRefs(MiembroStore)
-const enviarInformacion = () =>{
-    console.log(miembro.value)
+const enviarInformacion = async () =>{
+    try {
+        await MiembroStore.enviarInformacion()
+    } catch (error) {
+        
+    }
 }
 </script>

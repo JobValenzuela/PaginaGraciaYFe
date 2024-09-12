@@ -1,29 +1,70 @@
 <script setup>
-import { ref } from "vue"
+import { ref, onMounted } from "vue"
 import PrincipalLayout from '@/components/General/PrincipalLayout.vue';
 import InformacionPersonal from "@/components/Miembros/InformacionPersonal.vue";
 import FechasImportantes from "@/components/Miembros/FechasImportantes.vue";
 import DiscipuladoJuan from "@/components/Miembros/DiscipuladoJuan.vue";
 import HaciaLaMeta1 from "@/components/Miembros/HaciaLaMeta1.vue";
 import HaciaLaMeta2 from "@/components/Miembros/HaciaLaMeta2.vue";
+import MiembrosService from '@/services/MiembrosService'
+
 const search = ref('')
 const dialog = ref(false)
 const isEdit = ref(false)
+const miembro = ref({})
 const miembros = ref([])
 const loading = ref(false)
-const miembro = ref({})
 const tab = ref()
+
+const headers = [
+    { title: 'Nombre del ministerio', key: 'nombre', align: 'center' },
+    { title: 'Celular', key: 'celular', align: 'center' },
+    { title: 'Fecha de nacimiento', key: 'fecha_nacimiento', align: 'center' },
+    { title: 'Acciones', key: 'acciones', align: 'center' },
+]
+
+onMounted(() => {
+    loadMiembros()
+})
+
+const loadMiembros = async () => {
+    try {
+        loading.value = true
+        const response = await MiembrosService.get()
+        miembros.value = await response.data.dataset
+    } catch (e) {
+        const message = e.response?.data?.message || 'Error cargando miembros'
+        showDialog('error', message)
+    } finally {
+        loading.value = false
+    }
+}
+
+// Abrir el diálogo para nuevo o editar
 const openDialog = (item) => {
     if (item) {
+        miembro.value = { ...item }
         isEdit.value = true
-        dialog.value = true
     } else {
+        miembro.value = {}
         isEdit.value = false
-        dialog.value = true
     }
-    
+    dialog.value = true
 }
+
+const deleteMiembros = async (item) => {
+    try {
+        await MiembrosService.delete(item.id_miembro)
+        loadMiembros()
+        showDialog('success', 'Miembro eliminado correctamente')
+    } catch (e) {
+        const message = e.response?.data?.message || 'Error eliminando miembro'
+        showDialog('error', message)
+    }
+}
+
 </script>
+
 <template>
     <PrincipalLayout>
         <div>
@@ -35,17 +76,36 @@ const openDialog = (item) => {
                     <v-row align="center" class="mt-2">
                         <v-col>
                             <v-btn color="GYF2" @click="openDialog()">
-                                <div>
-                                    Nuevo miembro
-                                </div>
+                                Nuevo miembro
                             </v-btn>
                         </v-col>
                         <v-col>
                             <v-text-field label="Buscar Miembro" v-model="search" prepend-inner-icon="mdi-magnify" />
                         </v-col>
                     </v-row>
+                    <v-row>
+                        <v-data-table :headers="headers" :loading="loading" :items="miembros" class="bg-primary">
+                            <template v-slot:no-data>
+                                <v-alert :value="true" type="warning" text>
+                                    No se encontraron miembros
+                                </v-alert>
+                            </template>
+                            <template v-slot:loading>
+                                Cargando...
+                            </template>
+                            <template v-slot:item.acciones="{ item }">
+                                <v-icon color="secondary" class="me-3" @click="openDialog(item)">
+                                    mdi-pencil
+                                </v-icon>
+                                <v-icon color="error" class="me-3 cursor-pointer" @click="deleteMiembros(item)">
+                                    mdi-delete
+                                </v-icon>
+                            </template>
+                        </v-data-table>
+                    </v-row>
                 </v-card-text>
             </v-card>
+
             <v-dialog v-model="dialog" width="95%" persistent>
                 <v-card class="bg-primary" rounded="xl">
                     <v-card-title class="text-center mt-2" :class="$vuetify.display.mobile ? 'text-h4' : 'text-h5'">
@@ -67,29 +127,28 @@ const openDialog = (item) => {
 
                         <v-tabs-window v-model="tab">
                             <v-tabs-window-item value="1">
-                                <InformacionPersonal/>
+                                <InformacionPersonal />
                             </v-tabs-window-item>
                             <v-tabs-window-item value="2">
-                                <FechasImportantes/>
+                                <FechasImportantes />
                             </v-tabs-window-item>
                             <v-tabs-window-item value="3">
-                                <DiscipuladoJuan/>
+                                <DiscipuladoJuan />
                             </v-tabs-window-item>
                             <v-tabs-window-item value="4">
-                                <HaciaLaMeta1/>
+                                <HaciaLaMeta1 />
                             </v-tabs-window-item>
                             <v-tabs-window-item value="5">
-                                <HaciaLaMeta2/>
+                                <HaciaLaMeta2 />
                             </v-tabs-window-item>
                         </v-tabs-window>
                     </v-card-text>
                 </v-card>
             </v-dialog>
-
-
         </div>
     </PrincipalLayout>
 </template>
+
 <style scoped>
 .close-btn {
     position: absolute;

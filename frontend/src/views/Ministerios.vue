@@ -30,9 +30,11 @@ const loadMinisterios = async () => {
         loading.value = true
         const response = await MinisteriosService.get()
         ministerios.value = await response.data.dataset
-    } catch (error) {
-        console.error(error)
-    } finally {
+    } catch (e) {
+        const message = e.response.data.message
+
+        showDialog('error', message)
+    }finally {
         loading.value = false
     }
 }
@@ -65,8 +67,10 @@ const postOrPutMinisterio = async () => {
         }
         dialog.value = false
         loadMinisterios()
-    } catch (error) {
-        console.error(error)
+    }catch (e) {
+        const message = e.response.data.message
+
+        showDialog('error', message)
     }finally{
         loadingDialog.value = false
     }
