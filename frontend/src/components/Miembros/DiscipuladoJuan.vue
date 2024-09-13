@@ -16,13 +16,6 @@
                     <v-text-field v-model="miembro.fecha_fin_discipulado_juan" type="date" label="Fecha de inicio del discipulado"/>
                 </v-col>
             </v-row>
-            <v-row>
-                <v-col>
-                    <v-btn color="GYF2" size="large" block>
-                        Guardar
-                    </v-btn>
-                </v-col>
-            </v-row>
         </v-card-text>
     </v-card>
 </template>

@@ -35,12 +35,22 @@ const router = createRouter({
       },
     },
     {
-      path: "/Ministerios",
-      name: "Ministerios",
-      component: () => import("../views/Ministerios.vue"),
+      path: "/Catalogo/Ministerios",
+      name: "catalogo-ministerios",
+      component: () => import("../views/CatalogoMinisterios.vue"),
       meta: {
         icon: "mdi-church",
-        nombrePublico: 'Ministerios',
+        nombrePublico: 'Catalogo de ministerios',
+        isAuth: true, // Requiere autenticación
+      },
+    },
+    {
+      path: "/Lideres/Ministerios",
+      name: "Lideres-ministerios",
+      component: () => import("../views/LideresMinisterios.vue"),
+      meta: {
+        icon: "mdi-account-tie-outline",
+        nombrePublico: 'Lideres de los ministerios',
         isAuth: true, // Requiere autenticación
       },
     },

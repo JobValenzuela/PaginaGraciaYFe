@@ -16,13 +16,6 @@
                     <v-text-field v-model="miembro.fecha_fin_dicipulado_hacia_la_meta_1" type="date" label="Fecha de fin hacia la meta 1"/>
                 </v-col>
             </v-row>
-            <v-row>
-                <v-col>
-                    <v-btn color="GYF2" size="large" block>
-                        Guardar
-                    </v-btn>
-                </v-col>
-            </v-row>
         </v-card-text>
     </v-card>
 </template>

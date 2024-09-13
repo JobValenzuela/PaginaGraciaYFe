@@ -8,14 +8,15 @@ export const useMiembroStore = defineStore("miembro", () => {
   const miembro = ref({});
   const loading = ref(false);
   const enviarInformacion = async () => {
-    if(miembro.value.id_miembro){
-        await MiembrosService.post(miembro.value);
-    }else{
-        await MiembrosService.put(miembro.value,miembro.value.id_miembro);
+    if (miembro.value.id_miembro) {
+      await MiembrosService.put(miembro.value, miembro.value.id_miembro);
+    } else {
+      await MiembrosService.post(miembro.value);
     }
   };
   return {
     enviarInformacion,
     miembro,
+    loading
   };
 });

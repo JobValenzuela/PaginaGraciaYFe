@@ -9,23 +9,18 @@
             <v-row>
                 <v-col>
                     <v-text-field label="Número de celular" v-model="miembro.celular" type="tel" maxlength="15"
-                    placeholder="Ej: 5551234567" />
+                        placeholder="Ej: 5551234567" />
                 </v-col>
                 <v-col>
-                    <v-text-field label="Fecha de nacimiento" v-model="miembro.fecha_nacimiento" type="date"/>
+                    <v-text-field label="Fecha de nacimiento" v-model="miembro.fecha_nacimiento" type="date" />
                 </v-col>
             </v-row>
             <v-row>
                 <v-col>
-                    <v-text-field label="Calle" v-model="miembro.calle"/>
+                    <v-text-field label="Calle" v-model="miembro.calle" />
                 </v-col>
                 <v-col>
                     <v-text-field label="Colonia" v-model="miembro.colonia" />
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col>
-                    <v-btn color="GYF2" size="large" block @click="enviarInformacion()" >Guardar</v-btn>
                 </v-col>
             </v-row>
             <!-- <div class="text-center text-h5 my-2">
@@ -37,14 +32,8 @@
 
 <script setup>
 import { useMiembroStore } from '@/stores/MiembroStore';
+import { showDialog } from '@/Utils/Dialogs';
 import { storeToRefs } from 'pinia'
 const MiembroStore = useMiembroStore()
-const { miembro } = storeToRefs(MiembroStore)
-const enviarInformacion = async () =>{
-    try {
-        await MiembroStore.enviarInformacion()
-    } catch (error) {
-        
-    }
-}
+const { miembro,loading } = storeToRefs(MiembroStore)
 </script>

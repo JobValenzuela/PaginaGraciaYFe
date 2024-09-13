@@ -2,7 +2,7 @@
 import { ref, onMounted } from "vue"
 import PrincipalLayout from '@/components/General/PrincipalLayout.vue';
 import { maxLength, required } from "@/Utils/Rules";
-import MinisteriosService from "@/services/MinisteriosService";
+import CatalogoMinisteriosService from "@/services/CatalogoMinisteriosService";
 import {showDialog} from '@/Utils/Dialogs'
 // Definir variables reactivas
 const search = ref('')
@@ -19,7 +19,6 @@ const headers = [
     { title: 'Nombre del ministerio', key: 'nombre', align: 'center' },
     { title: 'Descripcion', key: 'descripcion', align: 'center' },
     { title: 'Fecha de creación', key: 'created_at', align: 'center' },
-    { title: 'Fecha de ultima modificación', key: 'updated_at', align: 'center' },
     { title: 'Acciones', key: 'acciones', align: 'center' },
 ]
 onMounted(() => {
@@ -28,7 +27,7 @@ onMounted(() => {
 const loadMinisterios = async () => {
     try {
         loading.value = true
-        const response = await MinisteriosService.get()
+        const response = await CatalogoMinisteriosService   .get()
         ministerios.value = await response.data.dataset
     } catch (e) {
         const message = e.response.data.message
@@ -59,10 +58,10 @@ const postOrPutMinisterio = async () => {
     try {
         loadingDialog.value = true
         if(ministerio.value.id_ministerio){
-            const response = await MinisteriosService.put(ministerio.value,ministerio.value.id_ministerio)
+            const response = await CatalogoMinisteriosService   .put(ministerio.value,ministerio.value.id_ministerio)
             showDialog('success','Ministerio actualizado correctamente')
         }else{
-            const response = await MinisteriosService.post(ministerio.value)
+            const response = await CatalogoMinisteriosService   .post(ministerio.value)
             showDialog('success','Ministerio creado correctamente')
         }
         dialog.value = false
@@ -78,7 +77,7 @@ const postOrPutMinisterio = async () => {
 
 const deleteMinisterio = async (item) => {
     try {
-        await MinisteriosService.delete(item.id_ministerio)
+        await CatalogoMinisteriosService    .delete(item.id_ministerio)
 
         loadMinisterios()
         showDialog('success', 'Ministerio eliminado correctamente')

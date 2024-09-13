@@ -7,13 +7,16 @@ import DiscipuladoJuan from "@/components/Miembros/DiscipuladoJuan.vue";
 import HaciaLaMeta1 from "@/components/Miembros/HaciaLaMeta1.vue";
 import HaciaLaMeta2 from "@/components/Miembros/HaciaLaMeta2.vue";
 import MiembrosService from '@/services/MiembrosService'
+import { useMiembroStore } from '@/stores/MiembroStore';
+import { storeToRefs } from 'pinia'
+import { showConfirmDialog, showDialog } from "@/Utils/Dialogs";
+const MiembroStore = useMiembroStore()
+const { miembro, loading } = storeToRefs(MiembroStore)
 
 const search = ref('')
 const dialog = ref(false)
 const isEdit = ref(false)
-const miembro = ref({})
 const miembros = ref([])
-const loading = ref(false)
 const tab = ref()
 
 const headers = [
@@ -33,6 +36,7 @@ const loadMiembros = async () => {
         const response = await MiembrosService.get()
         miembros.value = await response.data.dataset
     } catch (e) {
+        console.log(e);
         const message = e.response?.data?.message || 'Error cargando miembros'
         showDialog('error', message)
     } finally {
@@ -54,12 +58,31 @@ const openDialog = (item) => {
 
 const deleteMiembros = async (item) => {
     try {
-        await MiembrosService.delete(item.id_miembro)
-        loadMiembros()
-        showDialog('success', 'Miembro eliminado correctamente')
+        const confirm = await showConfirmDialog("¿Seguro?","¿Estas seguro de que quieres eliminarlo?")
+        if(confirm){
+            await MiembrosService.delete(item.id_miembro)
+            loadMiembros()
+            showDialog('success', 'Miembro eliminado correctamente')
+        }
     } catch (e) {
         const message = e.response?.data?.message || 'Error eliminando miembro'
         showDialog('error', message)
+    }
+}
+
+const enviarInformacion = async () => {
+    try {
+        loading.value = true
+        const response = await MiembroStore.enviarInformacion()
+        const message = miembro.value.id_miembro ? "Miembro actualizado correctamente" : "Miembro creado con exito"
+        showDialog('success', message)
+        loadMiembros()
+        dialog.value = false
+    } catch (e) {
+        const message = e.response?.data?.message || 'Error eliminando miembro'
+        showDialog('error', message)
+    }finally{
+        loading.value = false
     }
 }
 
@@ -78,6 +101,9 @@ const deleteMiembros = async (item) => {
                             <v-btn color="GYF2" @click="openDialog()">
                                 Nuevo miembro
                             </v-btn>
+                            <v-icon class="ms-2 text-h4" @click="loadMiembros()" v-ripple>
+                                mdi-refresh
+                            </v-icon>
                         </v-col>
                         <v-col>
                             <v-text-field label="Buscar Miembro" v-model="search" prepend-inner-icon="mdi-magnify" />
@@ -143,6 +169,9 @@ const deleteMiembros = async (item) => {
                             </v-tabs-window-item>
                         </v-tabs-window>
                     </v-card-text>
+                    <v-card-actions>
+                        <v-btn class="bg-GYF2" block size="large" @click="enviarInformacion()" rounded="xl" :loading="loading" :disabled="loading">Guardar</v-btn>
+                    </v-card-actions>
                 </v-card>
             </v-dialog>
         </div>

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
-class MinisterioController extends Controller
+class CatalogoMinisteriosController extends Controller
 {
     // Obtener todos los ministerios
     public function get()

@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MiembrosController;
-use App\Http\Controllers\MinisterioController;
+use App\Http\Controllers\CatalogoMinisteriosController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -11,10 +11,15 @@ Route::get('/', function () {
 
 Route::post('/login', [LoginController::class, 'login']);
 
-Route::get('/ministerios', [MinisterioController::class, 'get']);
-Route::post('/ministerios', [MinisterioController::class, 'post']);
-Route::put('/ministerios/{id}', [MinisterioController::class, 'update']);
-Route::delete('/ministerios/{id}', [MinisterioController::class, 'destroy']);
+Route::get('/catalogo/ministerios', [CatalogoMinisteriosController::class, 'get']);
+Route::post('/catalogo/ministerios', [CatalogoMinisteriosController::class, 'post']);
+Route::put('/catalogo/ministerios/{id}', [CatalogoMinisteriosController::class, 'update']);
+Route::delete('/catalogo/ministerios/{id}', [CatalogoMinisteriosController::class, 'destroy']);
+
+Route::get('/ministerios', [CatalogoMinisteriosController::class, 'get']);
+Route::post('/ministerios', [CatalogoMinisteriosController::class, 'post']);
+Route::put('/ministerios/{id}', [CatalogoMinisteriosController::class, 'update']);
+Route::delete('/ministerios/{id}', [CatalogoMinisteriosController::class, 'destroy']);
 
 Route::get('/miembros', [MiembrosController::class, 'get']);
 Route::post('/miembros', [MiembrosController::class, 'post']);

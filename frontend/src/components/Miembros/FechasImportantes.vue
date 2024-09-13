@@ -20,13 +20,6 @@
                         v-model="miembro.fecha_bautismo_espiritu_santo" type="date"/>
                 </v-col>
             </v-row>
-            <v-row>
-                <v-col>
-                    <v-btn color="GYF2" size="large" block>
-                        Guardar
-                    </v-btn>
-                </v-col>
-            </v-row>
         </v-card-text>
     </v-card>
 </template>
