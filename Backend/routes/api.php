@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LideresMinisteriosController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MiembrosController;
 use App\Http\Controllers\CatalogoMinisteriosController;
@@ -16,10 +17,10 @@ Route::post('/catalogo/ministerios', [CatalogoMinisteriosController::class, 'pos
 Route::put('/catalogo/ministerios/{id}', [CatalogoMinisteriosController::class, 'update']);
 Route::delete('/catalogo/ministerios/{id}', [CatalogoMinisteriosController::class, 'destroy']);
 
-Route::get('/ministerios', [CatalogoMinisteriosController::class, 'get']);
-Route::post('/ministerios', [CatalogoMinisteriosController::class, 'post']);
-Route::put('/ministerios/{id}', [CatalogoMinisteriosController::class, 'update']);
-Route::delete('/ministerios/{id}', [CatalogoMinisteriosController::class, 'destroy']);
+Route::get('/lideres/ministerios', [LideresMinisteriosController::class, 'get']);
+Route::post('/lideres/ministerios', [LideresMinisteriosController::class, 'post']);
+Route::put('/lideres/ministerios/{id}', [LideresMinisteriosController::class, 'update']);
+Route::delete('/lideres/ministerios/{id}', [LideresMinisteriosController::class, 'destroy']);
 
 Route::get('/miembros', [MiembrosController::class, 'get']);
 Route::post('/miembros', [MiembrosController::class, 'post']);
