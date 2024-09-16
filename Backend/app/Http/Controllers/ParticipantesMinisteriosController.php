@@ -7,13 +7,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
-class CatalogoMinisteriosController extends Controller
+class ParticipantesMinisteriosController extends Controller
 {
     // Obtener todos los ministerios
     public function get()
     {
         return ApiResponse::response(data: \DB::select("
-                        select * from ministerios
+                        select
+                         pm.*,
+                         m.nombre as nombre_miembro,
+                         m2.nombre as nombre_ministerios
+                         from participantes_ministerios pm
+                        join miembros m where m.id_miembro = pm.id_miembro
+                        join ministerios m2 where m2.id_ministerios = pm.id_ministerio
                     "));
     }
 
@@ -21,10 +27,17 @@ class CatalogoMinisteriosController extends Controller
     public function post(Request $request)
     {
         $validated = $request->validate([
-            'nombre' => 'required|string|max:60',
-            'descripcion' => 'nullable|string|max:255',
+            'id_ministerio' => 'required|int|exists:ministerios,id_ministerio',
+            'id_miembro' => 'required|int|exists:miembros,id_miembro',
         ]);
+        $existsParticipante = DB::selectOne("Select * from participantes_minsterios
+                                where id_miembro = ? and id_ministerio = ?");
 
+        if ($existsParticipante) {
+            ApiResponse::response(message: "Este miembro ya pertenece a este ministerio", code: 400);
+        }
+        $existsLider = DB::selectOne("Select * from lideres_ministerios
+                            where id_miembro = ? and fecha_fin is null");
         DB::insert("
                     insert into ministerios (nombre, descripcion, created_at, updated_at)
                     values (?, ?, ?, ?)

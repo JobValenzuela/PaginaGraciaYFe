@@ -4,4 +4,4 @@ export default Object.freeze({
   
     // desarrollo
     API_URL: 'http://localhost:80/api',
-  })
+})

@@ -55,6 +55,16 @@ const router = createRouter({
       },
     },
     {
+      path: "/Participantes/Ministerios",
+      name: "Participantes-ministerios",
+      component: () => import("../views/ParticipantesMinisterios.vue"),
+      meta: {
+        icon: "mdi-account-tie-outline",
+        nombrePublico: 'Participantes de los ministerios',
+        isAuth: true, // Requiere autenticación
+      },
+    },
+    {
       path: "/Usuarios",
       name: "UsuariosyPermisos",
       component: () => import("../views/Usuarios.vue"),
