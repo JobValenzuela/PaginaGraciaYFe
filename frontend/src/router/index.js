@@ -75,6 +75,16 @@ const router = createRouter({
       },
     },
     {
+      path: "/Familias",
+      name: "Familias",
+      component: () => import("../views/Familias.vue"),
+      meta: {
+        icon: "mdi-account-key-outline", // Icono de usuarios con permisos
+        nombrePublico: 'Familias',
+        isAuth: true, // Requiere autenticación
+      },
+    },
+    {
       path: "/Usuarios",
       name: "UsuariosyPermisos",
       component: () => import("../views/Usuarios.vue"),

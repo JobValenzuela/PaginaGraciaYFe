@@ -20,6 +20,7 @@ const form = ref(null);
 
 const headers = [
     { title: 'Nombre del evento', key: 'nombre', align: 'center' },
+    { title: 'Nombre del evento', key: 'miembro_encargado', align: 'center' },
     { title: 'Hora', key: 'hora', align: 'center' },
     { title: 'Fecha', key: 'fecha', align: 'center' },
     { title: 'Publicidad', key: 'publicidad', align: 'center' },

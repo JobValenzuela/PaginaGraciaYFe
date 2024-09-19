@@ -1,5 +1,7 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Administacion;
+
+use App\Http\Controllers\Controller;
 
 use App\Http\Helpers\ApiResponse;
 use App\Models\Ministerio;
@@ -13,7 +15,7 @@ class EventosController extends Controller
     public function get()
     {
         return ApiResponse::response(data: \DB::select("
-                        select e.*,m.nombre from eventos e
+                        select e.*,m.nombre miembro_encargado from eventos e
                         join miembros m on m.id_miembro = e.id_miembro_encargado
                     "));
     }

@@ -1,5 +1,7 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Administacion;
+
+use App\Http\Controllers\Controller;
 
 use App\Http\Helpers\ApiResponse;
 use App\Models\Ministerio;

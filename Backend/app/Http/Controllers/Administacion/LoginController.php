@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Administacion;
+
+use App\Http\Controllers\Controller;
 
 use Exception;
 use Illuminate\Http\Request;
 use App\Http\Helpers\ApiResponse;
-use App\Http\Controllers\Controller;
 use App\Http\Helpers\TokenUserHandler;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
@@ -22,7 +23,7 @@ class LoginController extends Controller
         $params = json_decode($request->getContent());
 
         if (empty($params))
-            return ApiResponse::response(status: 'error', code: 400, msg: 'No json');
+            return ApiResponse::response(status: 'error', code: 400, message: 'No json');
 
         $validator = Validator::make((array) $params, [
             'usuario' => 'required|string|max:255',
@@ -30,7 +31,7 @@ class LoginController extends Controller
         ]);
 
         if ($validator->fails())
-            return ApiResponse::response(status: 'error', code: 400, msg: json_encode($validator->errors()));
+            return ApiResponse::response(status: 'error', code: 400, message: json_encode($validator->errors()));
 
         try {
             //se busca en la db el usuario por medio del nombre de usuario
@@ -38,7 +39,7 @@ class LoginController extends Controller
                 ->first();
             // si no existe el usuario o está inactivo, o su contraseña es incorrecta
             if (!$user || !password_verify($params->password, $user->password))
-                return ApiResponse::response(status: 'error', code: 400, msg: 'Usuario no encontrado');
+                return ApiResponse::response(status: 'error', code: 400, message: 'Usuario no encontrado');
 
             // si todo sale bien, se crea un token nuevo para el usuario
             $token = TokenUserHandler::encode($user);
@@ -56,7 +57,7 @@ class LoginController extends Controller
 
             return ApiResponse::response(data: $data);
         } catch (Exception $e) {
-            return ApiResponse::response(status: 'error', code: 500, msg: $e->getMessage());
+            return ApiResponse::response(status: 'error', code: 500, message: $e->getMessage());
         }
     }
 }
