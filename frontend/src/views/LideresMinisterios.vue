@@ -24,7 +24,7 @@ const headers = [
     { title: 'Nombre del líder', key: 'nombre_miembro', align: 'center' },
     { title: 'Nombre del ministerio', key: 'nombre_ministerio', align: 'center' },
     { title: 'Fecha en que comenzo', key: 'fecha_inicio', align: 'center' },
-    { title: 'Fecha de última modificación', key: 'updated_at', align: 'center' },
+    { title: 'Fecha en que termino', key: 'fecha_termino', align: 'center' },
     { title: 'Acciones', key: 'acciones', align: 'center' },
 ]
 

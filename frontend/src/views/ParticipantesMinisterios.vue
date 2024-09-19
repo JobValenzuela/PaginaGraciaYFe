@@ -3,40 +3,36 @@ import { ref, onMounted } from "vue"
 import PrincipalLayout from '@/components/General/PrincipalLayout.vue';
 import { maxLength, required } from "@/Utils/Rules";
 import { showDialog } from '@/Utils/Dialogs'
-import LideresMinisteriosService from "@/services/LideresMinisteriosService";
+import ParticipantesMinisteriosService from "@/services/ParticipantesMinisteriosService";
 import MiembrosService from "@/services/MiembrosService";
 import CatalogoMinisteriosService from "@/services/CatalogoMinisteriosService";
 
 // Definir variables reactivas
 const search = ref('')
 const dialog = ref(false)
-const isEdit = ref(false)
-const lideres = ref([])
+const participantes = ref([])
 const miembros = ref([])
 const ministerios = ref([])
 const loading = ref(false)
 const loadingDialog = ref(false)
-const lider = ref({})
-const tab = ref(null)
+const participante = ref({})
 const form = ref(null)
 
 const headers = [
-    { title: 'Nombre del líder', key: 'nombre_miembro', align: 'center' },
-    { title: 'Nombre del ministerio', key: 'nombre_ministerio', align: 'center' },
-    { title: 'Fecha en que comenzo', key: 'fecha_inicio', align: 'center' },
-    { title: 'Fecha de última modificación', key: 'updated_at', align: 'center' },
+    { title: 'Ministerio', key: 'nombre_ministerio', align: 'center' },
+    { title: 'Miembro', key: 'nombre_miembro', align: 'center' },
     { title: 'Acciones', key: 'acciones', align: 'center' },
 ]
 
 onMounted(() => {
-    loadLideres()
+    loadParticipantes()
 })
 
-const loadLideres = async () => {
+const loadParticipantes = async () => {
     try {
         loading.value = true
-        const response = await LideresMinisteriosService.get()
-        lideres.value = await response.data.dataset
+        const response = await ParticipantesMinisteriosService.get()
+        participantes.value = await response.data.dataset
     } catch (e) {
         const message = e.response.data.message
         showDialog('error', message)
@@ -50,7 +46,7 @@ const loadMiembros = async () => {
         miembros.value = await response.data.dataset
     } catch (e) {
         console.log(e);
-        const message = e.response?.data?.message || 'Error cargando miembros'
+        const message = e.response?.data?.message || 'Error cargando los participantes de los ministerios'
         showDialog('error', message)
     }
 }
@@ -67,37 +63,25 @@ const loadMinisterios = async () => {
 }
 
 // Abrir el diálogo para nuevo o editar
-const openDialog = (item) => {
-    loadMinisterios()
-    loadMiembros()
-    if (item) {
-        lider.value = { ...item }
-        isEdit.value = true
+const openDialog = async () => {
+    loadingDialog.value = true
+    await loadMinisterios()
+    await loadMiembros()
+    loadingDialog.value = false
+        participante.value = {}
         dialog.value = true
-    } else {
-        lider.value = {}
-        isEdit.value = false
-        dialog.value = true
-    }
 }
 
 // Método para crear o editar líder de ministerio
-const postOrPutLider = async () => {
+const postParticipante = async () => {
     const { valid } = await form.value.validate()
     if (!valid) return
     try {
         loadingDialog.value = true
-        console.log(lider.value);
-        
-        if (lider.value.id_lider) {
-            await LideresMinisteriosService.put(lider.value, lider.value.id_lider)
-            showDialog('success', 'Líder actualizado correctamente')
-        } else {
-            await LideresMinisteriosService.post(lider.value)
-            showDialog('success', 'Líder creado correctamente')
-        }
+            await ParticipantesMinisteriosService.post(participante.value)
+            showDialog('success', 'Miembro agregado correctamente al ministerio')
         dialog.value = false
-        loadLideres()
+        loadParticipantes()
     } catch (e) {
         const message = e.response.data.message
         showDialog('error', message)
@@ -106,11 +90,11 @@ const postOrPutLider = async () => {
     }
 }
 
-const deleteLider = async (item) => {
+const deleteParticipante = async (item) => {
     try {
-        await LideresMinisteriosService.delete(item.id_lider)
-        loadLideres()
-        showDialog('success', 'Líder eliminado correctamente')
+        await ParticipantesMinisteriosService.delete(item.id_participante_ministerio)
+        loadParticipantes()
+        showDialog('success', 'Se quito el miembro del ministerio correctamente')
     } catch (e) {
         const message = e.response.data.message
         showDialog('error', message)
@@ -124,29 +108,29 @@ const deleteLider = async (item) => {
             <!-- Card Principal -->
             <v-card class="bg-primary" elevation="24" rounded="xl">
                 <v-card-title class="text-h4 text-center mt-3">
-                    Líderes de Ministerios
+                    Participantes ministerios
                 </v-card-title>
                 <v-card-text>
                     <v-row align="center" class="mt-2">
                         <v-col>
                             <v-btn color="GYF2" @click="openDialog()">
-                                <div>Nuevo Líder</div>
+                                <div>Añadir un miembro a algun ministerio</div>
                             </v-btn>
-                            <v-icon class="ms-2 text-h4" @click="loadLideres()" v-ripple>
+                            <v-icon class="ms-2 text-h4" @click="loadParticipantes()" v-ripple>
                                 mdi-refresh
                             </v-icon>
                         </v-col>
                         <v-col>
-                            <v-text-field label="Buscar líder" v-model="search" prepend-inner-icon="mdi-magnify" />
+                            <v-text-field label="Buscar miembro" v-model="search" prepend-inner-icon="mdi-magnify" />
                         </v-col>
                     </v-row>
                     <v-row>
                         <v-col>
-                            <v-data-table :items="lideres" :loading="loading" :search="search" :headers="headers"
+                            <v-data-table :items="participantes" :loading="loading" :search="search" :headers="headers"
                                 class="bg-primary">
                                 <template v-slot:no-data>
                                     <v-alert :value="true" type="warning" text>
-                                        No se encontraron líderes
+                                        No hay miembros añadidos en ningun ministerio
                                     </v-alert>
                                 </template>
                                 <template v-slot:loading>
@@ -156,7 +140,7 @@ const deleteLider = async (item) => {
                                     <v-icon color="secondary" class="me-3" @click="openDialog(item)">
                                         mdi-pencil
                                     </v-icon>
-                                    <v-icon color="error" class="me-3 cursor-pointer" @click="deleteLider(item)">
+                                    <v-icon color="error" class="me-3 cursor-pointer" @click="deleteParticipante(item)">
                                         mdi-delete
                                     </v-icon>
                                 </template>
@@ -170,20 +154,18 @@ const deleteLider = async (item) => {
             <v-dialog v-model="dialog" max-width="700px">
                 <v-card class="bg-primary" rounded="xl">
                     <v-card-title class="text-center mt-2" :class="$vuetify.display.mobile ? 'text-h4' : 'text-h5'">
-                        {{ isEdit ? 'Editar líder' : 'Nuevo líder' }}
+                        Añadir un miembro a un ministerio
                     </v-card-title>
                     <v-card-text>
                         <v-form ref="form" @submit.prevent="">
-                            <v-autocomplete label="Miembro" :items="miembros" item-title="nombre" item-value="id_miembro" v-model="lider.id_miembro"/>
-                            <v-autocomplete label="Ministerio" :items="ministerios" item-title="nombre" item-value="id_ministerio" v-model="lider.id_ministerio"/>
-                            <v-text-field label="Fecha de inicio" :rules="required" type="date" v-model="lider.fecha_inicio"/>
-                            <v-text-field label="Fecha de termino" type="date" v-model="lider.fecha_termino"/>
+                            <v-autocomplete label="Miembro" :items="miembros" item-title="nombre" item-value="id_miembro" v-model="participante.id_miembro" :rules="required"/>
+                            <v-autocomplete label="Ministerio" :items="ministerios" item-title="nombre" item-value="id_ministerio" v-model="participante.id_ministerio" :rules="required"/>
                         </v-form>
                     </v-card-text>
                     <v-card-actions class="d-flex justify-center align-center mt-n6 mb-4">
-                        <v-btn class="bg-GYF2" size="large" @click="postOrPutLider()" :loading="loadingDialog"
+                        <v-btn class="bg-GYF2" size="large" @click="postParticipante()" :loading="loadingDialog"
                             :disabled="loadingDialog">
-                            {{ isEdit ? 'Guardar' : 'Crear' }}
+                            Guardar
                         </v-btn>
                     </v-card-actions>
                 </v-card>
@@ -198,4 +180,9 @@ const deleteLider = async (item) => {
     top: 10px;
     right: 10px;
 }
+
+.swal2-container {
+    z-index: 999999 !important;
+}
+
 </style>

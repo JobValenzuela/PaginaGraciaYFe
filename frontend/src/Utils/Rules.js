@@ -14,22 +14,6 @@ export const password = [
     }
 ]
 
-export const birthDate = [
-    value => {
-        const today = new Date()
-        const bDate = new Date(value)
-        const age = today.getFullYear() - bDate.getFullYear()
-        const monthDiff = today.getMonth() - bDate.getMonth()
-
-        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < bDate.getDate())) {
-            age--
-        }
-
-        if (age >= 18) return true
-
-        return 'Debes tener al menos 18 años'
-    }
-]
 
 export const beforeToday = [
     value => {

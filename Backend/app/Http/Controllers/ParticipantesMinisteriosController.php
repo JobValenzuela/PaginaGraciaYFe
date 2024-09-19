@@ -16,10 +16,10 @@ class ParticipantesMinisteriosController extends Controller
                         select
                          pm.*,
                          m.nombre as nombre_miembro,
-                         m2.nombre as nombre_ministerios
+                         m2.nombre as nombre_ministerio
                          from participantes_ministerios pm
-                        join miembros m where m.id_miembro = pm.id_miembro
-                        join ministerios m2 where m2.id_ministerios = pm.id_ministerio
+                        join miembros m on m.id_miembro = pm.id_miembro
+                        join ministerios m2 on m2.id_ministerio = pm.id_ministerio
                     "));
     }
 
@@ -30,58 +30,41 @@ class ParticipantesMinisteriosController extends Controller
             'id_ministerio' => 'required|int|exists:ministerios,id_ministerio',
             'id_miembro' => 'required|int|exists:miembros,id_miembro',
         ]);
-        $existsParticipante = DB::selectOne("Select * from participantes_minsterios
-                                where id_miembro = ? and id_ministerio = ?");
+        $existsParticipante = DB::selectOne("Select * from participantes_ministerios
+                                where id_miembro = ? and id_ministerio = ?",[$request->id_miembro,$request->id_ministerio]);
+                                \Log::debug(json_encode($existsParticipante));
 
         if ($existsParticipante) {
-            ApiResponse::response(message: "Este miembro ya pertenece a este ministerio", code: 400);
+            return ApiResponse::response(message: "Este miembro ya pertenece a este ministerio", code: 400);
         }
-        $existsLider = DB::selectOne("Select * from lideres_ministerios
-                            where id_miembro = ? and fecha_fin is null");
+        $existsLider = DB::selectOne("
+                            Select * from lideres_ministerios lm
+                            where lm.id_miembro = ?
+                            and lm.fecha_termino is null
+                            and id_ministerio = ?
+                            ",[$request->id_miembro,$request->id_ministerio]);
+        if ($existsLider) {
+            return ApiResponse::response('Error', code: 400, message: 'Este miembro es lider de este ministerio');
+        }
         DB::insert("
-                    insert into ministerios (nombre, descripcion, created_at, updated_at)
-                    values (?, ?, ?, ?)
+                    insert into participantes_ministerios (id_miembro, id_ministerio, created_at)
+                    values (?, ?, ?)
                     ",
-            [$request->nombre, $request->descripcion, now(), now()]
+            [
+                $request->id_miembro,
+                $request->id_ministerio,
+                now()
+            ]
         );
-        return ApiResponse::response(code: 201, message: "Ministerio creado correctamente");
+        return ApiResponse::response(code: 201, message: "Miembro añadido correctamente al ministerio");
     }
-
-    // Obtener un ministerio por ID
-
-    // Actualizar un ministerio existente
-    public function update(Request $request, $id)
-    {
-        // Crear el validador usando Validator::make
-        $validator = Validator::make($request->all(), [
-            'nombre' => 'required|string|max:60',
-            'descripcion' => 'nullable|string|max:255',
-        ]);
-
-        // Verificar si el validador falla
-        if ($validator->fails()) {
-            return ApiResponse::response(message: $validator->errors()->first(), code: 400); // Usar 400 para errores de validación
-        }
-
-        // Ejecutar la consulta de actualización en la base de datos
-        \DB::update('UPDATE ministerios SET nombre = ?, descripcion = ?, updated_at = ? WHERE id_ministerio = ?', [
-            $request->nombre,
-            $request->descripcion,
-            now(),
-            $id
-        ]);
-
-        // Devolver una respuesta exitosa
-        return ApiResponse::response(message: 'Ministerio actualizado con éxito', code: 200);
-    }
-
 
     // Eliminar un ministerio
     public function destroy($id)
     {
-        \DB::delete("
-            DELETE FROM ministerios where id_ministerio = ?
+        DB::delete("
+            DELETE FROM participantes_ministerios where id_participante_ministerio = ?
             ", [$id]);
-        return ApiResponse::response(code: 204, message: 'Eliminado correctamente');
+        return ApiResponse::response(code: 204, message: 'Miembro eliminado correctamente del ministerio');
     }
 }

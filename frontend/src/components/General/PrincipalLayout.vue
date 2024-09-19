@@ -1,29 +1,29 @@
-            <script setup>
-            import { ref, onMounted } from 'vue'
-            import { useRouter, useRoute } from 'vue-router'
-            import UserStore from '@/stores/UserStore'
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import UserStore from '@/stores/UserStore'
 
-            const userStore = UserStore()
-            const router = useRouter()
-            const currentRoute = useRoute()
-            const routes = router.options.routes
-            const drawer = ref(true)
-            const rail = ref(true)
-            const routesFilter = ref([])
+const userStore = UserStore()
+const router = useRouter()
+const currentRoute = useRoute()
+const routes = router.options.routes
+const drawer = ref(true)
+const rail = ref(true)
+const routesFilter = ref([])
 
-            onMounted(() => {
-                routesFilter.value = routes.filter((route) => {
-                    return route.meta && route.meta.isAuth === true
-                })
-            })
+onMounted(() => {
+    routesFilter.value = routes.filter((route) => {
+        return route.meta && route.meta.isAuth === true
+    })
+})
 
-            const toggleTheme = () => {
-                userStore.modo = !userStore.modo
-            }
+const toggleTheme = () => {
+    userStore.modo = !userStore.modo
+}
 
-            const destroy = () => {
-                // lógica para cerrar sesión
-            }
+const destroy = () => {
+    // lógica para cerrar sesión
+}
 </script>
 <template>
     <v-app :theme="userStore.modo ? 'light' : 'dark'" class="bg-primary">
@@ -100,7 +100,7 @@
             </v-list>
         </v-navigation-drawer>
 
-        <v-main class=" mx-6 my-4" >
+        <v-main class=" mx-6 my-4">
             <!-- Aquí renderizamos el contenido pasado al layout -->
             <slot></slot>
         </v-main>
