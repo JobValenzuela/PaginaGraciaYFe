@@ -1,12 +1,12 @@
 import Swal from 'sweetalert2'
-
+import UserStore from '@/stores/UserStore'
 let background = ''
 let foreground = ''
 
 const setTheme = () => {
-    const theme = localStorage.getItem('theme')
-
-    if (theme === 'dark') {
+    const userStore = UserStore()
+    
+    if (!userStore.modo) {
         background = '#212121'
         foreground = '#fff'
     } else {

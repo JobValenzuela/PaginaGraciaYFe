@@ -29,22 +29,27 @@ class MiembrosFamiliasController extends Controller
     // Crear un nuevo ministerio
     public function post(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'id_familia' => 'required|int|exists:familia,id_familia',
-            'id_miembro' => 'required|int|exists:miembros,id_miembro',
-            'rol_en_familia' => 'required|string|max:30',
-        ]);
-        if ($validator->fails()) {
-            return ApiResponse::response(message: $validator->errors()->first(), code: 400); // Usar 400 para errores de validación
-        }
+        try {
+            \Log::debug('llego');
+            $validator = Validator::make($request->all(), [
+                'id_familia' => 'required|int|exists:familia,id_familia',
+                'id_miembro' => 'required|int|exists:miembros,id_miembro',
+                'rol_en_familia' => 'required|string|max:30',
+            ]);
+            if ($validator->fails()) {
+                return ApiResponse::response(message: $validator->errors()->first(), code: 400); // Usar 400 para errores de validación
+            }
 
-        DB::insert("
-                    insert into miembros_familia (id_familia, id_miembro, rol_en_familia, created_at, updated_at)
-                    values (?, ?, ?, ?, ?)
-                    ",
-            [$request->id_familia, $request->id_miembro, $request->rol_en_familia, now(), now()]
-        );
-        return ApiResponse::response(code: 201, message: "Miembro añadido en la familia correctamente");
+            DB::insert("
+                        insert into miembros_familia (id_familia, id_miembro, rol_en_familia, created_at, updated_at)
+                        values (?, ?, ?, ?, ?)
+                        ",
+                [$request->id_familia, $request->id_miembro, $request->rol_en_familia, now(), now()]
+            );
+            return ApiResponse::response(code: 201, message: "Miembro añadido en la familia correctamente");
+        } catch (\Exception $e) {
+            return ApiResponse::response(message: $e->getMessage(), code: 500);
+        }
     }
 
     // Eliminar un ministerio
