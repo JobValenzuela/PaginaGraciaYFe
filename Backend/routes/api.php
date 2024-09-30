@@ -15,5 +15,6 @@ require_once 'Administacion/Eventos.php';
 require_once 'Administacion/Ministerios.php';
 require_once 'Administacion/Familias.php';
 require_once 'Administacion/Consejerias.php';
+require_once 'Administacion/IngresosEgresos.php';
 
 

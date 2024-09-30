@@ -17,7 +17,7 @@ export default {
         return axios.get(`/miembros/familias/${id}`)
     },
     addMiembrosFamilia(data) {
-        return axios.post(`/miembros/familias/`,data)
+        return axios.post(`/miembros/familias`,data)
     },
     deleteMiembroFamilia(id) {
         return axios.delete(`/miembros/familias/${id}`)

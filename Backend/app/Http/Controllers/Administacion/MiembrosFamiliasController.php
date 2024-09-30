@@ -30,9 +30,8 @@ class MiembrosFamiliasController extends Controller
     public function post(Request $request)
     {
         try {
-            \Log::debug('llego');
             $validator = Validator::make($request->all(), [
-                'id_familia' => 'required|int|exists:familia,id_familia',
+                'id_familia' => 'required|int|exists:familias,id_familia',
                 'id_miembro' => 'required|int|exists:miembros,id_miembro',
                 'rol_en_familia' => 'required|string|max:30',
             ]);
@@ -48,6 +47,7 @@ class MiembrosFamiliasController extends Controller
             );
             return ApiResponse::response(code: 201, message: "Miembro añadido en la familia correctamente");
         } catch (\Exception $e) {
+            \Log::debug(json_encode($e->getMessage()));
             return ApiResponse::response(message: $e->getMessage(), code: 500);
         }
     }
