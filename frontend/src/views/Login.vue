@@ -23,7 +23,7 @@ const login = async () => {
         const response = await authService.login(loginData)
         UserStore.createUserData(response.data.dataset)
 
-        router.push({ name: 'dashboard' })
+        router.push({ name: 'Dashboard' })
     } catch (e) {
         console.log(e)
     } finally {

@@ -10,6 +10,7 @@ use App\Http\Helpers\ApiResponse;
 use App\Http\Helpers\TokenUserHandler;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -26,8 +27,8 @@ class LoginController extends Controller
             return ApiResponse::response(status: 'error', code: 400, message: 'No json');
 
         $validator = Validator::make((array) $params, [
-            'usuario' => 'required|string|max:255',
-            'password' => 'required|string|max:128'
+            'user' => 'required|string|max:255',
+            'pass' => 'required|string|max:128'
         ]);
 
         if ($validator->fails())
@@ -35,11 +36,11 @@ class LoginController extends Controller
 
         try {
             //se busca en la db el usuario por medio del nombre de usuario
-            $user = User::where('nombre_usuario', $params->usuario)
-                ->first();
-            // si no existe el usuario o está inactivo, o su contraseña es incorrecta
-            if (!$user || !password_verify($params->password, $user->password))
+            $user = User::where('nombre_usuario', $params->user)->first();
+            // Verificar si el usuario existe, está activo y la contraseña es correcta
+            if (!$user || !Hash::check($params->pass, $user->password)) {
                 return ApiResponse::response(status: 'error', code: 400, message: 'Usuario no encontrado');
+            }
 
             // si todo sale bien, se crea un token nuevo para el usuario
             $token = TokenUserHandler::encode($user);
@@ -51,8 +52,7 @@ class LoginController extends Controller
             $data = [
                 'token' => $token,
                 'nombre_usuario' => $user->nombre_usuario,
-                'id_usuario' => $user->usuario_id,
-                'tipo_usuario' => strtolower($user->tipo_usuario),
+                'id_usuario' => $user->id_usuario,
             ];
 
             return ApiResponse::response(data: $data);

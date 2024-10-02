@@ -22,7 +22,8 @@ const toggleTheme = () => {
 }
 
 const destroy = () => {
-    // lógica para cerrar sesión
+    userStore.destroy()
+    router.push('/login')
 }
 </script>
 <template>
@@ -43,7 +44,7 @@ const destroy = () => {
                         <v-btn v-bind="props">
                             <div class="d-flex">
                                 <div>
-                                    {{ userStore.user.nombre_completo }}
+                                    {{ userStore.user.nombre_usuario }}
                                 </div>
                                 <div>
                                     <v-icon>mdi-chevron-down</v-icon>

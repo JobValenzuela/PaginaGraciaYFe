@@ -5,7 +5,7 @@ import axios from 'axios';
 export default defineStore('UserStore', () => {
     const user = ref({
         token: '',
-        user: '',
+        nombre_usuario: '',
         id: 0,
         isLogged: false,
         isAdmin: false

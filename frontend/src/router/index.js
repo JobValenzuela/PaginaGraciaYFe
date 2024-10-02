@@ -137,7 +137,7 @@ const router = createRouter({
     {
       path: "/Usuarios",
       name: "UsuariosyPermisos",
-      component: () => import("../views/Usuarios.vue"),
+      component: () => import("../views/UsuariosyPermisos.vue"),
       meta: {
         icon: "mdi-shield-account", // Icono de usuarios con permisos
         nombrePublico: 'Usuarios y permisos',
@@ -146,5 +146,9 @@ const router = createRouter({
     },
   ],
 });
+
+// router.beforeEach(()=>{
+//   return router
+// })
 
 export default router;

@@ -21,7 +21,7 @@ class TokenUserHandler
         $jwt_secret = env('JWT_SECRET');
 
         $payload = [
-            'usuario_id' => $user->usuario_id,
+            'id_usuario' => $user->id_usuario,
             'init' => time(),
             'exp' => time() + (60 * 60 * 6), // 6 hr para que expire el token
         ];
