@@ -96,7 +96,7 @@ import { ref, onMounted } from "vue";
 import PrincipalLayout from '@/components/General/PrincipalLayout.vue';
 import { maxLength, required } from "@/Utils/Rules";
 import MobiliarioService from "@/services/MobiliarioService";
-import { showDialog } from '@/Utils/Dialogs';
+import { showConfirmDialog, showDialog } from '@/Utils/Dialogs';
 
 const search = ref('');
 const dialog = ref(false);
@@ -168,6 +168,8 @@ const postOrPutRegsitro = async () => {
 
 const deleteRegistro = async (item) => { 
     try {
+        const confirm = await showConfirmDialog('Eliminar','Estas seguro de eliminarlo?','warning')
+        if(!confirm)return
         await MobiliarioService.delete(item.id_mobiliario); 
         loadMobiliario();
         showDialog('success', 'Regsitro eliminado correctamente');

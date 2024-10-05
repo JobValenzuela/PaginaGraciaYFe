@@ -114,7 +114,7 @@ import PrincipalLayout from '@/components/General/PrincipalLayout.vue';
 import { maxLength, required } from "@/Utils/Rules";
 import ConsejeriaService from "@/services/ConsejeriaService"; // Cambiado a ConsejeriaService
 import MiembrosService from "@/services/MiembrosService";
-import { showDialog } from '@/Utils/Dialogs';
+import { showConfirmDialog, showDialog } from '@/Utils/Dialogs';
 
 // Definir variables reactivas
 const search = ref('');
@@ -208,6 +208,11 @@ const postOrPutConsejeria = async () => { // Cambiado a postOrPutConsejeria
 
 const deleteConsejeria = async (item) => { // Cambiado a deleteConsejeria
     try {
+        const confirm = await showConfirmDialog(
+            'Eliminar',
+            'Estas seguro de eliminar esta consejeria?',
+            'warning')
+        if(!confirm) return
         await ConsejeriaService.delete(item.id_consejeria); // Cambiado a consejería
         loadConsejerias();
         showDialog('success', 'Consejería eliminada correctamente');

@@ -15,7 +15,7 @@ const setTheme = () => {
     }
 }
 
-export const showConfirmDialog = async (title, text, confirmBtnText = 'Continuar', cancelBtnText = 'Cancelar') => {
+export const showConfirmDialog = async (title, text,icon, confirmBtnText = 'Continuar', cancelBtnText = 'Cancelar') => {
     setTheme()
 
     const confirm = await Swal.fire({
@@ -23,7 +23,7 @@ export const showConfirmDialog = async (title, text, confirmBtnText = 'Continuar
         background: background,
         title: title,
         text: text,
-        icon: "info",
+        icon: icon,
         showCancelButton: true,
         confirmButtonText: confirmBtnText,
         cancelButtonText: cancelBtnText,

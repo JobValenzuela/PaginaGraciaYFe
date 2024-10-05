@@ -4,7 +4,7 @@ import PrincipalLayout from '@/components/General/PrincipalLayout.vue';
 import { maxLength, required } from "@/Utils/Rules";
 import EventosService from "@/services/EventosService";
 import MiembrosService from "@/services/MiembrosService";
-import { showDialog } from '@/Utils/Dialogs';
+import { showConfirmDialog, showDialog } from '@/Utils/Dialogs';
 
 // Definir variables reactivas
 const search = ref('');
@@ -99,6 +99,11 @@ const postOrPutEvento = async () => {
 
 const deleteEvento = async (item) => {
     try {
+        const confirm = await showConfirmDialog(
+            'Estas seguro de eliminar este evento?',
+            '',
+            'warning')
+        if(!confirm) return
         await EventosService.delete(item.id_evento);
         loadEventos();
         showDialog('success', 'Evento eliminado correctamente');

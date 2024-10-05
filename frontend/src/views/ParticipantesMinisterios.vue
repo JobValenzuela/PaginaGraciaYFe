@@ -2,7 +2,7 @@
 import { ref, onMounted } from "vue"
 import PrincipalLayout from '@/components/General/PrincipalLayout.vue';
 import { maxLength, required } from "@/Utils/Rules";
-import { showDialog } from '@/Utils/Dialogs'
+import { showConfirmDialog, showDialog } from '@/Utils/Dialogs'
 import ParticipantesMinisteriosService from "@/services/ParticipantesMinisteriosService";
 import MiembrosService from "@/services/MiembrosService";
 import CatalogoMinisteriosService from "@/services/CatalogoMinisteriosService";
@@ -92,6 +92,11 @@ const postParticipante = async () => {
 
 const deleteParticipante = async (item) => {
     try {
+        const confirm = await showConfirmDialog(
+            'Estas seguro de eliminar este participante?',
+            '',
+            'warning')
+        if(!confirm) return
         await ParticipantesMinisteriosService.delete(item.id_participante_ministerio)
         loadParticipantes()
         showDialog('success', 'Se quito el miembro del ministerio correctamente')

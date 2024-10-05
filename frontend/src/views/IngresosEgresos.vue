@@ -46,7 +46,7 @@
                                     <v-icon color="secondary" class="me-3" @click="openDialog(item)">
                                         mdi-pencil
                                     </v-icon>
-                                    <v-icon color="error" class="me-3 cursor-pointer" @click="deleteConsejeria(item)">
+                                    <v-icon color="error" class="me-3 cursor-pointer" @click="deleteIngresoEgreso(item)">
                                         mdi-delete
                                     </v-icon>
                                 </template>
@@ -96,7 +96,7 @@ import { ref, onMounted } from "vue";
 import PrincipalLayout from '@/components/General/PrincipalLayout.vue';
 import { maxLength, required } from "@/Utils/Rules";
 import IngresoEgresoService from "@/services/IngresoEgresoService";
-import { showDialog } from '@/Utils/Dialogs';
+import { showConfirmDialog, showDialog } from '@/Utils/Dialogs';
 
 // Definir variables reactivas
 const search = ref('');
@@ -169,8 +169,13 @@ const postOrPutIngresoEgreso = async () => {
     }
 };
 
-const deleteConsejeria = async (item) => { // Cambiado a deleteConsejeria
+const deleteIngresoEgreso = async (item) => { 
     try {
+        const confirm = await showConfirmDialog(
+            'Eliminar',
+            'Estas seguro de eliminar el ' + (item.tipo=='I' ? 'ingreso' : 'egreso') + ' ?',
+            'warning')
+        if(!confirm)return
         await IngresoEgresoService.delete(item.id_ingreso_egreso);
         loadIngresosEgresos();
         showDialog('success', 'Consejería eliminada correctamente');

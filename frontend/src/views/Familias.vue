@@ -254,7 +254,7 @@ const postOrPutFamilia = async () => {
 
 const deletefamilia = async (item) => {
     try {
-        const confirm = await showConfirmDialog('¿Estas seguro de eliminar esta familia?')
+        const confirm = await showConfirmDialog('¿Estas seguro de eliminar esta familia?','','warning')
         if (!confirm) return
         await FamiliaService.delete(item.id_familia);
         loadFamilias();

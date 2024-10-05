@@ -19,5 +19,6 @@ require_once 'Administacion/IngresosEgresos.php';
 require_once 'Administacion/Usuarios.php';
 require_once 'Administacion/Roles.php';
 require_once 'Administacion/Mobiliario.php';
+require_once 'Administacion/Peticiones.php';
 
 
